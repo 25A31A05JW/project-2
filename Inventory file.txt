@@ -1,0 +1,71 @@
+Step 1: Start
+
+Step 2: Define Node Structure
+Each node represents one item:
+Node:
+    item_id
+    item_name
+    quantity
+    price
+    next (pointer to next node)
+
+Step 3: Initialize
+Create a pointer:head = NULL
+
+Step 4: Display Menu (Repeat until exit)
+Add Item
+Update Item
+Delete Item
+Search Item
+Display All Items
+Exit
+
+Step 5: Perform Operations
+
+     5a. Add Item
+        Create new node newNode
+        Input item details
+        Set newNode->next = NULL
+        If head == NULL
+        head = newNode
+        Else
+        Traverse to last node
+        Attach new node at end
+    5b . Update Item
+        Input item_id
+        Set temp = head
+        Traverse list:
+        If temp->item_id == given_id
+        Update quantity/price
+        Stop  If not found -> print "Item not found"
+    5c .  Delete Item
+         Input item_id
+         Set:
+         temp = head
+         prev = NULL
+         Traverse list:
+         If item found:
+         If deleting first node:
+         head = temp->next
+         Else:
+         prev->next = temp->next
+         Free temp
+         Stop
+         If not found -> print "Item not found"
+    5d . Search Item
+         Input item_id
+         Set temp = head
+         Traverse:
+         If found -> display details
+         If not found -> print "Item not found"
+    5e . Display All Items
+         Set temp = head
+         If head == NULL
+         Print "Inventory empty"
+         Else:
+         Traverse list
+          Print each node details
+    5f . Exit
+         Stop program
+
+  Step 6: Stop
