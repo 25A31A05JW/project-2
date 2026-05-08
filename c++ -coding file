@@ -1,0 +1,184 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+struct Item {
+    int id;
+    string name;
+    int quantity;
+    float price;
+    Item* next;
+};
+
+class Inventory {
+private:
+    Item* head;
+
+public:
+    Inventory() {
+        head = NULL;
+    }
+
+    void addItem(int id, string name, int quantity, float price) {
+        Item* newItem = new Item{id, name, quantity, price, NULL};
+
+        if (head == NULL) {
+            head = newItem;
+        } else {
+            Item* temp = head;
+            while (temp->next != NULL)
+                temp = temp->next;
+            temp->next = newItem;
+        }
+        cout << "\n✅ Item added successfully!\n";
+    }
+
+    void display() {
+        if (head == NULL) {
+            cout << "\n⚠ Inventory is empty\n";
+            return;
+        }
+
+        cout << "\n========== INVENTORY LIST ==========\n";
+        cout << left << setw(10) << "ID"
+             << setw(15) << "Name"
+             << setw(10) << "Qty"
+             << setw(10) << "Price"
+             << setw(15) << "Total" << endl;
+        cout << "-----------------------------------------------\n";
+
+        Item* temp = head;
+        while (temp != NULL) {
+            cout << left << setw(10) << temp->id
+                 << setw(15) << temp->name
+                 << setw(10) << temp->quantity
+                 << setw(10) << temp->price
+                 << setw(15) << temp->quantity * temp->price << endl;
+            temp = temp->next;
+        }
+    }
+
+    void search(int id) {
+        Item* temp = head;
+        while (temp != NULL) {
+            if (temp->id == id) {
+                cout << "\n🔍 Item Found:\n";
+                cout << "ID: " << temp->id
+                     << "\nName: " << temp->name
+                     << "\nQuantity: " << temp->quantity
+                     << "\nPrice: " << temp->price << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "\n❌ Item not found\n";
+    }
+
+    void update(int id, int qty) {
+        Item* temp = head;
+        while (temp != NULL) {
+            if (temp->id == id) {
+                temp->quantity = qty;
+                cout << "\n✏ Quantity updated successfully\n";
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "\n❌ Item not found\n";
+    }
+
+    void deleteItem(int id) {
+        if (head == NULL) {
+            cout << "\n❌ Inventory is empty\n";
+            return;
+        }
+
+        if (head->id == id) {
+            Item* del = head;
+            head = head->next;
+            delete del;
+            cout << "\n🗑 Item deleted successfully\n";
+            return;
+        }
+
+        Item* temp = head;
+        while (temp->next != NULL && temp->next->id != id)
+            temp = temp->next;
+
+        if (temp->next == NULL) {
+            cout << "\n❌ Item not found\n";
+            return;
+        }
+
+        Item* del = temp->next;
+        temp->next = temp->next->next;
+        delete del;
+        cout << "\n🗑 Item deleted successfully\n";
+    }
+};
+
+int main() {
+    Inventory inv;
+    int choice, id, qty;
+    string name;
+    float price;
+
+    while (true) {
+        cout << "\n==============================";
+        cout << "\n INVENTORY MANAGEMENT SYSTEM ";
+        cout << "\n==============================\n";
+        cout << "1. Add Item\n";
+        cout << "2. Display Inventory\n";
+        cout << "3. Search Item\n";
+        cout << "4. Update Quantity\n";
+        cout << "5. Delete Item\n";
+        cout << "6. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "\nEnter ID: ";
+                cin >> id;
+                cout << "Enter Name: ";
+                cin >> name;
+                cout << "Enter Quantity: ";
+                cin >> qty;
+                cout << "Enter Price: ";
+                cin >> price;
+                inv.addItem(id, name, qty, price);
+                break;
+
+            case 2:
+                inv.display();
+                break;
+
+            case 3:
+                cout << "\nEnter ID to search: ";
+                cin >> id;
+                inv.search(id);
+                break;
+
+            case 4:
+                cout << "\nEnter ID: ";
+                cin >> id;
+                cout << "Enter new Quantity: ";
+                cin >> qty;
+                inv.update(id, qty);
+                break;
+
+            case 5:
+                cout << "\nEnter ID to delete: ";
+                cin >> id;
+                inv.deleteItem(id);
+                break;
+
+            case 6:
+                cout << "\n👋 Exiting program...\n";
+                return 0;
+
+            default:
+                cout << "\n⚠ Invalid choice\n";
+        }
+    }
+}
